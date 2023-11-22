@@ -2,62 +2,43 @@
 import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
 ---
 <ShoelaceLayout title="Signals › WebApp">
-  <h1>Hello!</h1>
-  <div class="alert-toast">
-    <sl-button variant="primary">Primary</sl-button>
-    <sl-button variant="success">Success</sl-button>
-    <sl-button variant="neutral">Neutral</sl-button>
-    <sl-button variant="warning">Warning</sl-button>
-    <sl-button variant="danger">Danger</sl-button>
-
-    <sl-alert variant="primary" duration="3000" closable>
-      <sl-icon slot="icon" name="info-circle"></sl-icon>
-      <strong>This is super informative</strong><br />
-      You can tell by how pretty the alert is.
-    </sl-alert>
-
-    <sl-alert variant="success" duration="3000" closable>
-      <sl-icon slot="icon" name="check2-circle"></sl-icon>
-      <strong>Your changes have been saved</strong><br />
-      You can safely exit the app now.
-    </sl-alert>
-
-    <sl-alert variant="neutral" duration="3000" closable>
-      <sl-icon slot="icon" name="gear"></sl-icon>
-      <strong>Your settings have been updated</strong><br />
-      Settings will take effect on next login.
-    </sl-alert>
-
-    <sl-alert variant="warning" duration="3000" closable>
-      <sl-icon slot="icon" name="exclamation-triangle"></sl-icon>
-      <strong>Your session has ended</strong><br />
-      Please login again to continue.
-    </sl-alert>
-
-    <sl-alert variant="danger" duration="3000" closable>
-      <sl-icon slot="icon" name="exclamation-octagon"></sl-icon>
-      <strong>Your account has been deleted</strong><br />
-      We're very sorry to see you go!
-    </sl-alert>
+  <h1>Signals</h1>
+  <div class="controls">
+    <camera-control-hpr angles="[90,30,0]"></camera-control-hpr>
+    <camera-control-position coord="[45,6,500]"></camera-control-position>
   </div>
-
-  <camera-control-hpr angles="[90,30,0]"></camera-control-hpr>
 </ShoelaceLayout>
+
+<style>
+  body {
+    margin: 0 1rem;
+  }
+  .controls {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    height: 15rem;
+    width: 80%;
+  }
+  camera-control-hpr,
+  camera-control-position {
+    background-color: aliceblue;
+    padding: 1rem;
+    width: 50%;
+  }
+</style>
 
 <script>
   import "../components/CameraControlHPR.js";
+  import "../components/CameraControlPosition.js";
 
   const cameraControlHPR = document.querySelector("camera-control-hpr");
   cameraControlHPR?.addEventListener("angles-changed", (e) => {
     console.log(`HPR angles changed to [${e.detail.join(",")}]`);
   });
 
-  const container = document.querySelector('.alert-toast');
-
-  ['primary', 'success', 'neutral', 'warning', 'danger'].map(variant => {
-    const button = container?.querySelector(`sl-button[variant="${variant}"]`);
-    const alert = container?.querySelector(`sl-alert[variant="${variant}"]`);
-
-    button?.addEventListener('click', () => alert?.toast());
+  const cameraControlPosition = document.querySelector("camera-control-position");
+  cameraControlPosition?.addEventListener("coord-changed", (e) => {
+    console.log(`Position coordinates changed to [${e.detail.join(",")}]`);
   });
 </script>
