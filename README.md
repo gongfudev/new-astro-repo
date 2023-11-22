@@ -1,10 +1,10 @@
-# ‹Project title›
+# Lit Signals
 
-Experimenting with Astro, Shoelace and Lit.
+Exploration of [Lit Labs / Signals](https://www.npmjs.com/package/@lit-labs/preact-signals).
 
 ## Status
 
-👾 Design. Work-in-progress.
+👾 Tinkering. Work-in-progress.
 
 ## Components
 
