@@ -4,31 +4,46 @@ import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
 <ShoelaceLayout title="Signals › WebApp">
   <h1>Signals</h1>
   <div id="set01" class="controls">
-    <camera-control-hpr angles="[90,30,0]"></camera-control-hpr>
-    <camera-control-position coord="[45,6,500]"></camera-control-position>
+    <camera-control-hpr id="hpr01" angles="[90,30,0]"></camera-control-hpr>
+    <camera-control-position id="pos01" coord="[45,6,500]"></camera-control-position>
   </div>
   <div class="scene">
     <scene-view angles="[90,30,0]" coord="[45,6,500]"></scene-view>
   </div>
+  <div id="set02" class="controls">
+    <camera-control-hpr id="hpr02" angles="[90,30,0]"></camera-control-hpr>
+    <camera-control-position id="pos02" coord="[45,6,500]"></camera-control-position>
+  </div>
 </ShoelaceLayout>
 
 <script>
+  import { signal } from "@lit-labs/preact-signals";
+
   import "../components/CameraControlHPR.js";
   import "../components/CameraControlPosition.js";
   import "../components/SceneView.js";
 
   const sceneView = document.querySelector("scene-view");
+  const allCameraControlHPR = document.querySelectorAll("camera-control-hpr");
+  const allCameraControlPosition = document.querySelectorAll("camera-control-position");
 
-  const cameraControlHPR = document.querySelector("camera-control-hpr");
-  cameraControlHPR?.addEventListener("angles-changed", (e) => {
-    console.log(`HPR angles changed to [${e.detail.join(",")}]`);
-    sceneView?.setAttribute("angles", JSON.stringify(e.detail));
+  const angles = signal([90, 30, 0]);
+  const coord = signal([45, 6, 500]);
+
+  sceneView.signals = { angles, coord };
+
+  allCameraControlHPR?.forEach((cameraControlHPR) => {
+    cameraControlHPR.signal = angles;
+    cameraControlHPR.addEventListener("angles-changed", (e) => {
+      console.log(`HPR angles changed to [${e.detail.join(",")}]`);
+    })
   });
 
-  const cameraControlPosition = document.querySelector("camera-control-position");
-  cameraControlPosition?.addEventListener("coord-changed", (e) => {
-    console.log(`Position coordinates changed to [${e.detail.join(",")}]`);
-    sceneView?.setAttribute("coord", JSON.stringify(e.detail));
+  allCameraControlPosition?.forEach((cameraControlPosition) => {
+    cameraControlPosition.signal = coord;
+    cameraControlPosition.addEventListener("coord-changed", (e) => {
+      console.log(`Position 01 coordinates changed to [${e.detail.join(",")}]`);
+    })
   });
 </script>
 

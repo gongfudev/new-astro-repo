@@ -1,5 +1,6 @@
 /* eslint-env browser */
 import { LitElement, html, css } from 'lit-element';
+import { watch } from '@lit-labs/preact-signals';
 
 const ORIGIN_COORD = Object.freeze([0, 0, 0]);
 const LAT_MINMAX = Object.freeze([-90, 90]);
@@ -39,6 +40,8 @@ function parseAlt(val) {
 }
 
 export class CameraControlPosition extends LitElement {
+  #signal;
+
   static get styles() {
     return css`
       :host {
@@ -102,6 +105,10 @@ export class CameraControlPosition extends LitElement {
     }
   }
 
+  set signal(signal) {
+    this.#signal = signal;
+  }
+
   set coord(val) {
     const [lat, lng, alt] = normalizeCoord(val);
     const coord = [parseLat(lat), parseLng(lng), parseAlt(alt)];
@@ -148,6 +155,7 @@ export class CameraControlPosition extends LitElement {
     return html`
       <h1>Position</h1>
       <slot></slot>
+      <p>Signal: ${watch(this.#signal)}</p>
       ${this.renderCoord(this.coord, this.srs)}<br />
       ${this.renderSlider("lat", "Latitude", this.lat, LAT_MINMAX, this._onChangeLat)}<br />
       ${this.renderSlider("lng", "Longitude", this.lng, LNG_MINMAX, this._onChangeLng)}<br />
@@ -176,6 +184,9 @@ export class CameraControlPosition extends LitElement {
   }
 
   _onChangeCoord() {
+    if (this.#signal) {
+      this.#signal.value = this.coord;
+    };
     this.dispatchEvent(
       new CustomEvent("coord-changed", { detail: this.coord })
     );

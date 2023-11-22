@@ -1,5 +1,6 @@
 /* eslint-env browser */
 import { LitElement, html, css } from 'lit-element';
+import { watch } from '@lit-labs/preact-signals';
 
 const DEFAULT_ANGLES = Object.freeze([0, 0, 0]);
 const HPR_MINMAX = Object.freeze([-180, 180]);
@@ -29,6 +30,8 @@ function parseHPR(val) {
 }
 
 export class CameraControlHPR extends LitElement {
+  #signal;
+
   static get styles() {
     return css`
       :host {
@@ -72,6 +75,10 @@ export class CameraControlHPR extends LitElement {
     if(changedProperties.has("angles") ) {
       this._onChangeAngles();
     }
+  }
+
+  set signal(signal) {
+    this.#signal = signal;
   }
 
   set angles(val) {
@@ -120,6 +127,7 @@ export class CameraControlHPR extends LitElement {
     return html`
       <h1>HPR</h1>
       <slot></slot>
+      <p>Signal: ${watch(this.#signal)}</p>
       ${this.renderHPR(this.angles)}<br />
       ${this.renderSlider("heading", "Heading", this.heading, HPR_MINMAX, this._onChangeHeading)}<br />
       ${this.renderSlider("pitch", "Pitch", this.pitch, HPR_MINMAX, this._onChangePitch)}<br />
@@ -148,6 +156,9 @@ export class CameraControlHPR extends LitElement {
   }
 
   _onChangeAngles() {
+    if (this.#signal) {
+      this.#signal.value = this.angles;
+    };
     this.dispatchEvent(
       new CustomEvent("angles-changed", { detail: this.angles })
     );

@@ -1,7 +1,10 @@
 /* eslint-env browser */
 import { LitElement, html, css } from 'lit-element';
+import { watch } from '@lit-labs/preact-signals';
 
 export class SceneView extends LitElement {
+  #signals;
+
   static get styles() {
     return css`
       :host {
@@ -34,13 +37,18 @@ export class SceneView extends LitElement {
     this.coord = [0, 0, 0];
   }
 
+  set signals(signals) {
+    const {angles, coord} = signals;
+    this.#signals = { angles, coord };
+  }
+
   render() {
     return html`
       <div id="scene">
         <slot></slot>
         <h1>Scene</h1>
-        <p class="coord">Camera HPR: <code>${JSON.stringify(this.angles)}</code></p>
-        <p class="coord">Camera position: <code>${JSON.stringify(this.coord)}</code></p>
+        <p class="coord">Camera HPR: <code>${watch(this.#signals.angles)}</code></p>
+        <p class="coord">Camera position: <code>${watch(this.#signals.coord)}</code></p>
       </div>
     `;
   }
