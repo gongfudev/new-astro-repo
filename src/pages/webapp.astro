@@ -40,9 +40,18 @@ import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
       We're very sorry to see you go!
     </sl-alert>
   </div>
+
+  <camera-control-hpr angles="[90,30,0]"></camera-control-hpr>
 </ShoelaceLayout>
 
 <script>
+  import "../components/CameraControlHPR.js";
+
+  const cameraControlHPR = document.querySelector("camera-control-hpr");
+  cameraControlHPR?.addEventListener("angles-changed", (e) => {
+    console.log(`HPR angles changed to [${e.detail.join(",")}]`);
+  });
+
   const container = document.querySelector('.alert-toast');
 
   ['primary', 'success', 'neutral', 'warning', 'danger'].map(variant => {
