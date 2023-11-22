@@ -3,22 +3,47 @@ import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
 ---
 <ShoelaceLayout title="Signals › WebApp">
   <h1>Signals</h1>
-  <div class="controls">
+  <div id="set01" class="controls">
     <camera-control-hpr angles="[90,30,0]"></camera-control-hpr>
     <camera-control-position coord="[45,6,500]"></camera-control-position>
   </div>
+  <div class="scene">
+    <scene-view angles="[90,30,0]" coord="[45,6,500]"></scene-view>
+  </div>
 </ShoelaceLayout>
+
+<script>
+  import "../components/CameraControlHPR.js";
+  import "../components/CameraControlPosition.js";
+  import "../components/SceneView.js";
+
+  const sceneView = document.querySelector("scene-view");
+
+  const cameraControlHPR = document.querySelector("camera-control-hpr");
+  cameraControlHPR?.addEventListener("angles-changed", (e) => {
+    console.log(`HPR angles changed to [${e.detail.join(",")}]`);
+    sceneView?.setAttribute("angles", JSON.stringify(e.detail));
+  });
+
+  const cameraControlPosition = document.querySelector("camera-control-position");
+  cameraControlPosition?.addEventListener("coord-changed", (e) => {
+    console.log(`Position coordinates changed to [${e.detail.join(",")}]`);
+    sceneView?.setAttribute("coord", JSON.stringify(e.detail));
+  });
+</script>
 
 <style>
   body {
     margin: 0 1rem;
   }
-  .controls {
+  div.controls {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     height: 15rem;
-    width: 80%;
+  }
+  div.scene {
+    margin-top: 1rem; margin-bottom: 1rem;
   }
   camera-control-hpr,
   camera-control-position {
@@ -26,19 +51,8 @@ import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
     padding: 1rem;
     width: 50%;
   }
+  scene-view {
+    background-color: aliceblue;
+    width: 100%; height: 30rem;
+  }
 </style>
-
-<script>
-  import "../components/CameraControlHPR.js";
-  import "../components/CameraControlPosition.js";
-
-  const cameraControlHPR = document.querySelector("camera-control-hpr");
-  cameraControlHPR?.addEventListener("angles-changed", (e) => {
-    console.log(`HPR angles changed to [${e.detail.join(",")}]`);
-  });
-
-  const cameraControlPosition = document.querySelector("camera-control-position");
-  cameraControlPosition?.addEventListener("coord-changed", (e) => {
-    console.log(`Position coordinates changed to [${e.detail.join(",")}]`);
-  });
-</script>
