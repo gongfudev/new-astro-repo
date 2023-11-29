@@ -1,7 +1,8 @@
 ---
-import ShoelaceLayout from '../layouts/ShoelaceLayout.astro';
-import CardGrid from '../components/CardGrid.astro';
+import ShoelaceLayout from "../layouts/ShoelaceLayout.astro";
+import CardGrid from "../components/CardGrid.astro";
 ---
+
 <ShoelaceLayout title="Signals">
   <header>
     <h1>Signals</h1>
@@ -10,17 +11,25 @@ import CardGrid from '../components/CardGrid.astro';
     <CardGrid>
       <sl-card>
         <h2>Web App</h2>
-        Minimal layout, with support for Shoelace components.
-        <sl-button slot="footer"
-          variant="primary" outline
-          href="./webapp">Demo</sl-button>
+         Minimal layout, with support for Shoelace components.
+        <sl-button slot="footer" variant="primary" outline href="./webapp"
+          >Demo</sl-button
+        >
+      </sl-card>
+      <sl-card>
+        <h2>Small Signals Demo</h2>
+         Minimal layout, with support for Shoelace components.
+        <sl-button slot="footer" variant="primary" outline href="./smalldemo"
+          >Demo</sl-button
+        >
       </sl-card>
     </CardGrid>
   </main>
 </ShoelaceLayout>
 
 <style>
-  header, main {
+  header,
+  main {
     margin: auto;
     width: 1024px;
     padding: 1rem;

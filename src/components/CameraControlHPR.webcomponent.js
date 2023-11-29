@@ -1,6 +1,6 @@
 /* eslint-env browser */
-import { LitElement, html, css } from 'lit-element';
-import { watch } from '@lit-labs/preact-signals';
+import { LitElement, html, css } from "lit-element";
+import { watch } from "@lit-labs/preact-signals";
 
 const DEFAULT_ANGLES = Object.freeze([0, 0, 0]);
 const HPR_MINMAX = Object.freeze([-180, 180]);
@@ -10,7 +10,9 @@ export function default_angles() {
 }
 
 function normalizeHPR(angles) {
-  if (Array.isArray(angles) && angles.length === 3) { return angles; }
+  if (Array.isArray(angles) && angles.length === 3) {
+    return angles;
+  }
   return default_angles();
 }
 
@@ -62,7 +64,7 @@ export class CameraControlHPR extends LitElement {
     angles: {
       type: Array,
       hasChanged: (value, oldValue) => !isSameHPR(value, oldValue),
-    }
+    },
   };
 
   constructor() {
@@ -72,7 +74,7 @@ export class CameraControlHPR extends LitElement {
   }
 
   updated(changedProperties) {
-    if(changedProperties.has("angles") ) {
+    if (changedProperties.has("angles")) {
       this._onChangeAngles();
     }
   }
@@ -138,19 +140,14 @@ export class CameraControlHPR extends LitElement {
   renderHPR(position) {
     const [heading, pitch, roll] = position;
     return html`<p class="angles">
-      Angles: [ <code>${heading}°</code>, <code>${pitch}°</code>,
-      <code>${roll}°</code> ]
+      Angles: [ <code>${heading}°</code>, <code>${pitch}°</code>, <code>${roll}°</code> ]
     </p>`;
   }
 
   renderSlider(name, label, val, minmax, onChangeFn) {
     const [min, max] = minmax || [0, 1];
     return html`
-      <input type="range"
-        id="${name}" name="${name}"
-        min="${min}" max="${max}"
-        .value="${val}"
-        @input=${onChangeFn} />
+      <input type="range" id="${name}" name="${name}" min="${min}" max="${max}" .value="${val}" @input=${onChangeFn} />
       <label for="${name}">${label}</label>
     `;
   }
@@ -158,10 +155,8 @@ export class CameraControlHPR extends LitElement {
   _onChangeAngles() {
     if (this.#signal) {
       this.#signal.value = this.angles;
-    };
-    this.dispatchEvent(
-      new CustomEvent("angles-changed", { detail: this.angles })
-    );
+    }
+    this.dispatchEvent(new CustomEvent("angles-changed", { detail: this.angles }));
   }
 
   _onChangeHeading(e) {
