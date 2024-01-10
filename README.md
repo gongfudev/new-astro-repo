@@ -1,6 +1,6 @@
-# Lit Signals
+# ‹new-astro-repo›
 
-Exploration of [Lit Labs / Signals](https://www.npmjs.com/package/@lit-labs/preact-signals).
+Starter project with Astro, Shoelace and Lit.
 
 ## Status
 
